@@ -93,7 +93,7 @@ class StreamingIngestClientTest {
         String data = "Name, Age, Weight, Height";
         InputStream inputStream = new ByteArrayInputStream(StandardCharsets.UTF_8.encode(data).array());
         StreamSourceInfo streamSourceInfo = new StreamSourceInfo(inputStream);
-        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -118,8 +118,7 @@ class StreamingIngestClientTest {
         IngestionResult ingestionResult = streamingIngestClient.ingestFromStreamAsync(streamSourceInfo, ingestionProperties, clientRequestId).block();
         assertNotNull(ingestionResult);
 
-        OperationStatus status = ingestionResult.getIngestionStatusCollection()
-                .block().get(0).status;
+        OperationStatus status = ingestionResult.getIngestionStatusCollection().get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         ArgumentCaptor<ClientRequestProperties> clientRequestPropertiesArgumentCaptor = ArgumentCaptor.forClass(ClientRequestProperties.class);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -149,7 +148,7 @@ class StreamingIngestClientTest {
         StreamSourceInfo streamSourceInfo = new StreamSourceInfo(inputStream);
         // When ingesting compressed data, we should set this property true to avoid double compression.
         streamSourceInfo.setCompressionType(CompressionType.gz);
-        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -166,7 +165,7 @@ class StreamingIngestClientTest {
         StreamSourceInfo streamSourceInfo = new StreamSourceInfo(inputStream);
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.JSON);
         ingestionProperties.setIngestionMapping("JsonMapping", IngestionMapping.IngestionMappingKind.JSON);
-        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -190,7 +189,7 @@ class StreamingIngestClientTest {
         streamSourceInfo.setCompressionType(CompressionType.gz);
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.JSON);
         ingestionProperties.setIngestionMapping("JsonMapping", IngestionMapping.IngestionMappingKind.JSON);
-        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -238,7 +237,7 @@ class StreamingIngestClientTest {
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.JSON);
         ingestionProperties.setIngestionMapping("JsonMapping", IngestionMapping.IngestionMappingKind.JSON);
         IngestionResult ingestionResult = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties);
-        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().block().get(0).status.name());
+        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().get(0).status.name());
         assertEquals(1, ingestionResult.getIngestionStatusesLength());
     }
 
@@ -263,7 +262,7 @@ class StreamingIngestClientTest {
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.AVRO);
         ingestionProperties.setIngestionMapping("AvroMapping", IngestionMapping.IngestionMappingKind.AVRO);
         IngestionResult ingestionResult = streamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties);
-        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().block().get(0).status.name());
+        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().get(0).status.name());
         assertEquals(1, ingestionResult.getIngestionStatusesLength());
     }
 
@@ -321,7 +320,7 @@ class StreamingIngestClientTest {
     void ingestFromFile_Csv() throws Exception {
         String path = resourcesDirectory + "testdata.csv";
         FileSourceInfo fileSourceInfo = new FileSourceInfo(path, new File(path).length());
-        OperationStatus status = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), any(InputStream.class),
@@ -336,7 +335,7 @@ class StreamingIngestClientTest {
 
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.JSON);
         ingestionProperties.setIngestionMapping("JsonMapping", IngestionMapping.IngestionMappingKind.JSON);
-        OperationStatus status = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -351,7 +350,7 @@ class StreamingIngestClientTest {
         FileSourceInfo fileSourceInfo = new FileSourceInfo(path, new File(path).length());
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.JSON);
         ingestionProperties.setIngestionMapping("JsonMapping", IngestionMapping.IngestionMappingKind.JSON);
-        OperationStatus status = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties).getIngestionStatusCollection().block()
+        OperationStatus status = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties).getIngestionStatusCollection()
                 .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
@@ -411,7 +410,7 @@ class StreamingIngestClientTest {
         ingestionProperties.setDataFormat(IngestionProperties.DataFormat.JSON);
         ingestionProperties.setIngestionMapping("JsonMapping", IngestionMapping.IngestionMappingKind.JSON);
         IngestionResult ingestionResult = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties);
-        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().block().get(0).status.name());
+        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().get(0).status.name());
         assertEquals(1, ingestionResult.getIngestionStatusesLength());
     }
 
@@ -432,7 +431,7 @@ class StreamingIngestClientTest {
         String path = resourcesDirectory + "testdata.json";
         FileSourceInfo fileSourceInfo = new FileSourceInfo(path, new File(path).length());
         IngestionResult ingestionResult = streamingIngestClient.ingestFromFile(fileSourceInfo, ingestionProperties);
-        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().block().get(0).status.name());
+        assertEquals("Succeeded", ingestionResult.getIngestionStatusCollection().get(0).status.name());
         assertEquals(1, ingestionResult.getIngestionStatusesLength());
     }
 
@@ -462,7 +461,7 @@ class StreamingIngestClientTest {
 
         OperationStatus status = streamingIngestClient.ingestFromBlobAsync(blobSourceInfo, ingestionProperties, cloudBlockBlob, null).block()
                 .getIngestionStatusCollection()
-                .block().get(0).status;
+                .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestFromBlobAsync(any(String.class), any(String.class), any(String.class),
                 isNull(), any(String.class), any());
@@ -564,7 +563,7 @@ class StreamingIngestClientTest {
 
         ResultSetSourceInfo resultSetSourceInfo = new ResultSetSourceInfo(resultSet);
         OperationStatus status = streamingIngestClient.ingestFromResultSet(resultSetSourceInfo, ingestionProperties).getIngestionStatusCollection()
-                .block().get(0).status;
+                .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
         verify(streamingClientMock, atLeastOnce()).executeStreamingIngestAsync(any(String.class), any(String.class), argumentCaptor.capture(),
                 isNull(), any(String.class), isNull(), any(boolean.class));

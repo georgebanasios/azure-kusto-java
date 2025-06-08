@@ -17,13 +17,18 @@ public class IngestionStatusResult implements IngestionResult {
     }
 
     @Override
-    public Mono<List<IngestionStatus>> getIngestionStatusCollection() {
+    public Mono<List<IngestionStatus>> getIngestionStatusCollectionAsync() {
         return Mono.defer(() -> {
             if (ingestionStatus != null) {
                 return Mono.just(Collections.singletonList(ingestionStatus));
             }
-            return Mono.empty();
+            return Mono.just(Collections.emptyList());
         });
+    }
+
+    @Override
+    public List<IngestionStatus> getIngestionStatusCollection() {
+        return getIngestionStatusCollectionAsync().block();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class TableReportIngestionResult implements IngestionResult {
     }
 
     @Override
-    public Mono<List<IngestionStatus>> getIngestionStatusCollection() throws TableServiceErrorException {
+    public Mono<List<IngestionStatus>> getIngestionStatusCollectionAsync() throws TableServiceErrorException {
         List<Mono<IngestionStatus>> ingestionStatusMonos = descriptors.stream()
                 .map(descriptor -> {
                     TableAsyncClient tableAsyncClient = descriptor.getTableAsyncClient();
@@ -39,6 +39,11 @@ public class TableReportIngestionResult implements IngestionResult {
             }
             return resultList;
         });
+    }
+
+    @Override
+    public List<IngestionStatus> getIngestionStatusCollection() throws TableServiceErrorException {
+        return getIngestionStatusCollectionAsync().block();
     }
 
     @Override

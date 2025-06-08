@@ -109,7 +109,7 @@ class QueuedIngestClientTest {
     void ingestFromBlob_IngestionReportMethodIsNotTable_EmptyIngestionStatus() throws Exception {
         BlobSourceInfo blobSourceInfo = new BlobSourceInfo("https://blobPath.blob.core.windows.net/container/blob", 100);
         IngestionResult result = queuedIngestClient.ingestFromBlob(blobSourceInfo, ingestionProperties);
-        assertEquals(OperationStatus.Queued, result.getIngestionStatusCollection().block().get(0).status);
+        assertEquals(OperationStatus.Queued, result.getIngestionStatusCollection().get(0).status);
     }
 
     @Test

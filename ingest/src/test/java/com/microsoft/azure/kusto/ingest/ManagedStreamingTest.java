@@ -100,14 +100,14 @@ public class ManagedStreamingTest {
 
         // Expect to work and also choose no queuing
         OperationStatus status = managedStreamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties).getIngestionStatusCollection()
-                .block().get(0).status;
+                .get(0).status;
         assertEquals(OperationStatus.Succeeded, status);
 
         BooleanConsumer assertPolicyWorked = (boolean wasExpectedToUseQueuing) -> {
             try {
                 inputStream.reset();
                 IngestionStatus ingestionStatus = managedStreamingIngestClient.ingestFromStream(streamSourceInfo, ingestionProperties)
-                        .getIngestionStatusCollection().block().get(0);
+                        .getIngestionStatusCollection().get(0);
                 if (wasExpectedToUseQueuing) {
                     assertEquals(OperationStatus.Queued, ingestionStatus.status);
                 } else {
